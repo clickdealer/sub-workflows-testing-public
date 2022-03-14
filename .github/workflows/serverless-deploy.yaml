@@ -23,6 +23,9 @@ on:
       NPM_AUTH_TOKEN: 
         description: NPM auth token
         required: false
+      SERVERLESS_ENV:
+        description: A list of environment variables for Serverless Deploy
+        required: false
       
 jobs:
   serverless-deploy:
@@ -72,4 +75,5 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Serverless Deploy
+        env: ${{ fromJSON(secrets.SERVERLESS_ENV) }}
         run: npx serverless deploy --stage=${{ inputs.stage }}
