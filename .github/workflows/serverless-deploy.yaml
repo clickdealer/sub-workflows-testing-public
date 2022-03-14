@@ -5,13 +5,16 @@ on:
     inputs:
       aws-role:
         description: AWS role to assume
+        type: string
         required: true
       runs-on:
         description: Self hosted or not
+        type: string
         required: false
         default: self-hosted
       stage:
-        description: Environment to deploy to
+        description: Serverless stage
+        type: string
         required: true
     secrets:
       COMPOSER_AUTH:
