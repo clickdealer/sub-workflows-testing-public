@@ -78,6 +78,7 @@ jobs:
         id: serverless_env
         run: |
           json=$(echo "${{ secrets.SERVERLESS_ENV }}" | jq -Rnc '[inputs|split("=")|{(.[0]):.[1]}] | add')
+          echo ::add-mask::$json
           echo ::set-output name=json::$json
 
       - name: Hide sensitive variables
