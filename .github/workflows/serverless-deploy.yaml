@@ -74,11 +74,17 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
+      - name: Parse serverless environment variables
+        id: serverless_env
+        run: |
+          json=$(echo "${{ secrets.SERVERLESS_ENV }}" | jq -Rnc '[inputs|split("=")|{(.[0]):.[1]}] | add')
+          echo ::set-output name=json::$json
+
       - name: Hide sensitive variables
         uses: actions/github-script@v6
         with:
-          script: for (const secret of Object.values(${{ secrets.SERVERLESS_ENV }})) core.setSecret(secret)
+          script: for (const secret of Object.values(${{ steps.serverless_env.outputs.json }})) core.setSecret(secret)
 
       - name: Serverless Deploy
-        env: ${{ fromJSON(secrets.SERVERLESS_ENV) }}
+        env: ${{ fromJSON(steps.serverless_env.outputs.json) }}
         run: npx serverless deploy --stage=${{ inputs.stage }}
