@@ -51,15 +51,21 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      
+
       - name: Install Node Dependencies
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+      - name: Composer config file exists
+        uses: andstor/file-existence-action@v1
+        id: config_file
+        with:
+          files: composer.json, composer.lock
+
       - name: Install Composer Dependencies
         uses: php-actions/composer@v6
-        continue-on-error: true
+        if: steps.config_file.outputs.files_exists == 'true' 
         with:
           args: --ignore-platform-reqs
         env:
