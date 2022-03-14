@@ -8,7 +8,7 @@ on:
         type: string
         required: true
       runs-on:
-        description: Self hosted or not
+        description: The type of machine to run the job on
         type: string
         required: false
         default: self-hosted
