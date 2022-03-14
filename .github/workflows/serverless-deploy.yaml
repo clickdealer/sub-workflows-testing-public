@@ -65,5 +65,5 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
-      - name: Serverless Deploy Vars
+      - name: Serverless Deploy
         run: npx serverless deploy --stage=${{ inputs.stage }}
