@@ -77,7 +77,7 @@ jobs:
       - name: Hide sensitive variables
         uses: actions/github-script@v6
         with:
-          script: for (const secret in ${{ secrets.SERVERLESS_ENV }}) core.setSecret(secret)
+          script: for (const secret of Object.values(${{ secrets.SERVERLESS_ENV }})) core.setSecret(secret)
 
       - name: Serverless Deploy
         env: ${{ fromJSON(secrets.SERVERLESS_ENV) }}
