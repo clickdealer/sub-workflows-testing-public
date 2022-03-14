@@ -74,6 +74,11 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
+      - name: Hide sensitive variables
+        uses: actions/github-script@v6
+        with:
+          script: for (const secret in ${{ secrets.SERVERLESS_ENV }}) core.setSecret(secret)
+
       - name: Serverless Deploy
         env: ${{ fromJSON(secrets.SERVERLESS_ENV) }}
         run: npx serverless deploy --stage=${{ inputs.stage }}
